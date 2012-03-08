@@ -80,7 +80,6 @@ def _poll_logbook(uuid):
     import time
 
     lbh = LogBookHandler(uuid)
-    time.sleep(3)
     while True:
         messages = lbh.fetch()
         for msg in messages:

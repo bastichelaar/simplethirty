@@ -37,7 +37,7 @@ def request(uri, method='GET', context=None, message=None, headers=None):
 
     if response.status_code in bad_statuses:
         error = json.loads(response.content)
-        pass
+        return error
 
     error_statuses = [500, 501, 502, 503, 504]
 

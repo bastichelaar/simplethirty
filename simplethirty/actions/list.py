@@ -1,4 +1,4 @@
-import ast
+import json
 import sys
 
 from simplethirty import utils
@@ -23,9 +23,13 @@ def list(args):
                 method='GET',
                 context=context)
     except:
-        pass
+        sys.stderr.write("Could not connect to the API...")
+        sys.exit(2)
 
-    if response.content:
-        response_dict = ast.literal_eval(response.content)
-        for item in response_dict["items"]:
-            sys.stdout.write(item['name'] + "\n")
+    if response.status_code in [200, 201, 204]:
+        if response.content:
+            response_dict = json.loads(response.content)
+            for item in response_dict["items"]:
+                sys.stdout.write(item['name'] + "\n")
+    else:
+        sys.stderr.write("Something went wrong...")

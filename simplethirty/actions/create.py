@@ -97,11 +97,14 @@ def create(args):
     except:
         pass
 
-    if response.status_code in ['200', '201', '204'] :
-        sys.stdout.write("%s %s created" % (
-            args.type.capitalize(), args.name))
-    elif response.status_code == 405:
-        sys.stderr.write("%s %s already exists" % (
-            args.type.capitalize(), args.name))
-    elif response.status_code < 500:
-        sys.stderr.write("Something went wrong...")
+    try:
+        if response.status_code in [200, 201, 204] :
+            sys.stdout.write("%s %s created" % (
+                args.type.capitalize(), args.name))
+        elif response.status_code == 405:
+            sys.stderr.write("%s %s already exists" % (
+                args.type.capitalize(), args.name))
+        elif response.status_code < 500:
+            sys.stderr.write("Something went wrong...")
+    except:
+        sys.stderr.write(response['error'])
