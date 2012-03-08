@@ -35,7 +35,7 @@ from simplethirty.api import request
 @utils.arg('--wsgi-entry',
         default="app:entry",
         help='(wsgi flavor) the entrypoint of the application')
-def create(self, args):
+def create(args):
     """Create a new resource."""
 
     values = vars(args)
@@ -97,7 +97,7 @@ def create(self, args):
     except:
         pass
 
-    if response.status_code in range(200, 204) :
+    if response.status_code in ['200', '201', '204'] :
         sys.stdout.write("%s %s created" % (
             args.type.capitalize(), args.name))
     elif response.status_code == 405:

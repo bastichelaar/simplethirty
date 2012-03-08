@@ -20,7 +20,7 @@ from simplethirty.api import request
         help="Work on a specific app environment. This option only \
 applies for app resources."
             )
-def delete(self, args):
+def delete(args):
     """Delete a resource."""
     if args.environment:
         url = "%s/%s/%s/environment/%s/" % (

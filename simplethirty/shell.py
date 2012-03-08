@@ -218,28 +218,6 @@ Normally you don't need that.")
     def _format_error(self, error):
         return json.dumps(error, indent=4)
 
-    def _poll_logbook(self, uuid):
-        import time
-
-        lbh = LogBookHandler(uuid)
-        time.sleep(3)
-        while True:
-            messages = lbh.fetch()
-            for msg in messages:
-                if msg['loglevel'] == 1:
-                    sys.stdout.write(utils.format_logbook_message(msg))
-                    sys.stdout.write('\n')
-                elif msg['loglevel'] == 3:
-                    sys.stderr.write(utils.format_logbook_message(msg))
-                    sys.stderr.write('\n')
-            if lbh.status in 'finished':
-                sys.stdout.write('\n')
-                break
-            if lbh.status in 'error':
-                sys.stderr.write('\n')
-                break
-            time.sleep(5)
-
 def main():
     try:
         ThirtyCommandShell().main(sys.argv[1:])

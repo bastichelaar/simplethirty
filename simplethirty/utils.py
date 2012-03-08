@@ -26,6 +26,7 @@
 import sys
 import json
 
+from libthirty.logbook import LogBookHandler
 
 # Decorator for cli-args
 def arg(*args, **kwargs):
@@ -75,6 +76,27 @@ def format_logbook_message(msg):
 
     return formatted_message
 
+def _poll_logbook(uuid):
+    import time
+
+    lbh = LogBookHandler(uuid)
+    time.sleep(3)
+    while True:
+        messages = lbh.fetch()
+        for msg in messages:
+            if msg['loglevel'] == 1:
+                sys.stdout.write(format_logbook_message(msg))
+                sys.stdout.write('\n')
+            elif msg['loglevel'] == 3:
+                sys.stderr.write(format_logbook_message(msg))
+                sys.stderr.write('\n')
+        if lbh.status in 'finished':
+            sys.stdout.write('\n')
+            break
+        if lbh.status in 'error':
+            sys.stderr.write('\n')
+            break
+        time.sleep(5)
 
 class OutputFormater(object):
     GRAY = '30'
@@ -120,3 +142,5 @@ class RawOutputFormater(OutputFormater):
 
     def _format_debug(self, msg):
         return self._format_info(msg)
+
+

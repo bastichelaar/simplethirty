@@ -6,7 +6,6 @@ from simplethirty import utils
 from libthirty.state import env
 from libthirty.actions import ActionHandler
 from libthirty.exceptions import HttpReturnError
-from simplethirty.api import request
 
 
 ##
@@ -18,7 +17,7 @@ from simplethirty.api import request
 @utils.arg('--environment',
     default='production',
     help="The name of the environment to deploy.")
-def deploy(self, args):
+def deploy(args):
     """Deploy an app resource."""
     cmd = {'action': 'deploy', 'options': {}}
     cmd['options']['environment'] = args.environment
@@ -50,7 +49,7 @@ def deploy(self, args):
         sys.exit(1)
 
     try:
-        self._poll_logbook(action.uuid)
+        utils._poll_logbook(action.uuid)
     except KeyboardInterrupt:
         sys.exit(1)
     except HttpReturnError as e:

@@ -1,4 +1,5 @@
-import yaml
+import sys
+import json
 
 from simplethirty import utils
 from simplethirty.api import request
@@ -17,7 +18,7 @@ from simplethirty.api import request
 @utils.arg('--environment',
         default=None,
         help="The name of the default environment")
-def show(self, args):
+def show(args):
     """Show the details of a resource."""
 
     if args.environment:
@@ -42,4 +43,5 @@ def show(self, args):
     except:
         pass
 
-    print yaml.dump(yaml.load(response.content))
+    if response.content:
+        sys.stdout.write(json.dumps(json.loads(response.content), sort_keys=True, indent=4))
